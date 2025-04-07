@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Color War Game</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #141e30, #243b55);
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+    .game-container {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+      text-align: center;
+    }
+    header {
+      background: #1f2937;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+    .wallet {
+      font-size: 1.2rem;
+      color: #facc15;
+    }
+    .teams {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    .team {
+      flex: 1;
+      background: #374151;
+      padding: 15px;
+      border-radius: 10px;
+    }
+    .team input {
+      width: 80%;
+      padding: 8px;
+      margin-top: 10px;
+      border-radius: 6px;
+      border: none;
+    }
+    .team button {
+      margin-top: 10px;
+      padding: 10px;
+      width: 80%;
+      border: none;
+      background: #3b82f6;
+      color: white;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .team button:hover {
+      background: #2563eb;
+    }
+    .timer {
+      width: 100px;
+    }
+    .result-section {
+      margin-top: 20px;
+      background: #111827;
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 1.2rem;
+      color: #10b981;
+    }
+  </style>
+</head>
+<body>
+  <div class="game-container">
+    <header>
+      <h1>🎮 Color War</h1>
+      <div class="wallet">Wallet: ₹<span id="wallet-balance">100.00</span></div>
+    </header>
+
+    <div class="teams">
+      <div class="team" id="team-a">
+        <h2>Team A 🔵</h2>
+        <input type="number" id="bet-a" placeholder="Enter Bet" />
+        <button onclick="placeBet('A')">Bet on A</button>
+        <p>Total Bet: ₹<span id="total-a">0</span></p>
+      </div>
+      <div class="timer">
+        <p>Next Round In:</p>
+        <h2 id="countdown">10</h2>
+      </div>
+      <div class="team" id="team-b">
+        <h2>Team B 🔴</h2>
+        <input type="number" id="bet-b" placeholder="Enter Bet" />
+        <button onclick="placeBet('B')">Bet on B</button>
+        <p>Total Bet: ₹<span id="total-b">0</span></p>
+      </div>
+    </div>
+
+    <div class="result-section">
+      <h3 id="result-msg">Waiting for result...</h3>
+    </div>
+  </div>
+
+  <script>
+    let wallet = 100;
+    let betA = 0;
+    let betB = 0;
+    let userBetA = 0;
+    let userBetB = 0;
+    let countdown = 10;
+    let timer;
+
+    const walletEl = document.getElementById("wallet-balance");
+    const totalA = document.getElementById("total-a");
+    const totalB = document.getElementById("total-b");
+    const resultMsg = document.getElementById("result-msg");
+
+    function updateWallet() {
+      walletEl.innerText = wallet.toFixed(2);
+    }
+
+    function placeBet(team) {
+      const amount = parseFloat(document.getElementById(`bet-${team.toLowerCase()}`).value);
+      if (!amount || amount <= 0 || amount > wallet) {
+        alert("Invalid bet amount!");
+        return;
+      }
+
+      if (team === 'A') {
+        betA += amount;
+        userBetA += amount;
+      } else {
+        betB += amount;
+        userBetB += amount;
+      }
+
+      wallet -= amount;
+      updateWallet();
+      totalA.innerText = betA.toFixed(2);
+      totalB.innerText = betB.toFixed(2);
+      document.getElementById(`bet-${team.toLowerCase()}`).value = "";
+    }
+
+    function getResult() {
+      let winner;
+      if (betA > betB) {
+        winner = 'B';
+      } else if (betB > betA) {
+        winner = 'A';
+      } else {
+        winner = Math.random() < 0.5 ? 'A' : 'B';
+      }
+
+      resultMsg.innerText = `🏆 Winner is Team ${winner}`;
+
+      if (winner === 'A' && userBetA > 0) wallet += userBetA * 2;
+      if (winner === 'B' && userBetB > 0) wallet += userBetB * 2;
+
+      setTimeout(() => {
+        resetGame();
+        resultMsg.innerText = "Waiting for result...";
+      }, 3000);
+    }
+
+    function resetGame() {
+      betA = 0;
+      betB = 0;
+      userBetA = 0;
+      userBetB = 0;
+      totalA.innerText = "0";
+      totalB.innerText = "0";
+      updateWallet();
+      countdown = 10;
+    }
+
+    function startTimer() {
+      timer = setInterval(() => {
+        document.getElementById("countdown").innerText = countdown;
+        countdown--;
+        if (countdown < 0) {
+          getResult();
+          countdown = 10;
+        }
+      }, 1000);
+    }
+
+    updateWallet();
+    startTimer();
+  </script>
+</body>
+</html>

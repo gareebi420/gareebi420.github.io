@@ -1,0 +1,207 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: "Segoe UI", sans-serif;
+    background: #0f172a;
+    color: #fff;
+  }
+  
+  /* Navbar */
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #1e293b;
+    padding: 1rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  
+  .logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #38bdf8;
+  }
+  
+  .nav-links .btn {
+    background: #f43f5e;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    margin-left: 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  .nav-links .btn:hover {
+    background: #be123c;
+  }
+  
+  /* Sidebar */
+  .sidebar {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    width: 180px;
+    height: 100%;
+    background: #1e293b;
+    padding-top: 1rem;
+    z-index: 5;
+  }
+  .sidebar ul {
+    list-style: none;
+  }
+  .sidebar ul li a {
+    display: block;
+    color: #e2e8f0;
+    padding: 1rem;
+    text-decoration: none;
+    transition: background 0.3s;
+  }
+  .sidebar ul li a:hover {
+    background: #334155;
+  }
+  
+  /* Main Content */
+  .main-content {
+    margin-left: 200px;
+    padding: 2rem;
+  }
+  
+  /* Hero Section */
+  .hero {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  .hero h1 {
+    font-size: 3rem;
+  }
+  .highlight {
+    color: #facc15;
+  }
+  .hero p {
+    margin-top: 0.5rem;
+    color: #cbd5e1;
+  }
+  .explore-btn {
+    margin-top: 1rem;
+    display: inline-block;
+    background: #22c55e;
+    padding: 0.8rem 1.5rem;
+    border-radius: 10px;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.3s;
+  }
+  .explore-btn:hover {
+    background: #15803d;
+  }
+  
+  /* Games Section */
+  .section-title {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  .games-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+  }
+  .game-card {
+    background: #1e293b;
+    border-radius: 12px;
+    padding: 1rem;
+    width: 300px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    transition: transform 0.3s;
+  }
+  .game-card:hover {
+    transform: translateY(-5px);
+  }
+  .game-card img {
+    width: 100%;
+    height: 180px;
+    border-radius: 10px;
+    object-fit: cover;
+    margin-bottom: 1rem;
+  }
+  .play-btn {
+    margin-top: 1rem;
+    padding: 0.7rem 1.4rem;
+    border: none;
+    background: #3b82f6;
+    color: white;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  .play-btn:hover {
+    background: #1e40af;
+  }
+  
+  /* Modals */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 20;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal-box {
+    background: #1e293b;
+    padding: 2rem;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+    text-align: center;
+  }
+  .modal-box h2 {
+    margin-bottom: 1rem;
+  }
+  .modal-box input {
+    width: 100%;
+    padding: 0.7rem;
+    margin: 0.5rem 0;
+    border: none;
+    border-radius: 6px;
+  }
+  .modal-btn {
+    width: 100%;
+    padding: 0.8rem;
+    margin-top: 1rem;
+    background: #f43f5e;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  .modal-btn:hover {
+    background: #be123c;
+  }
+  .close {
+    position: absolute;
+    top: 12px;
+    right: 15px;
+    font-size: 1.5rem;
+    color: #94a3b8;
+    cursor: pointer;
+  }
+  

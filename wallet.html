@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gamble Wallet</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: #fff;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #1e293b;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #334155;
+    }
+
+    .logo { font-size: 1.7rem; font-weight: bold; color: #38bdf8; }
+    .main {
+      padding: 2rem;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .wallet-box {
+      background: #1e293b;
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 0 25px rgba(0,0,0,0.5);
+      text-align: center;
+    }
+
+    .wallet-box h2 { margin-bottom: 1rem; }
+    .balance {
+      font-size: 3rem;
+      font-weight: bold;
+      color: #facc15;
+      margin-bottom: 2rem;
+      transition: all 0.3s;
+    }
+
+    .btn-group {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+    }
+
+    .btn {
+      padding: 0.9rem 2rem;
+      background: #3b82f6;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .btn:hover { background: #2563eb; }
+
+    .history {
+      text-align: left;
+      background: #0f172a;
+      padding: 1rem;
+      border-radius: 10px;
+      max-height: 300px;
+      overflow-y: auto;
+      border: 1px solid #334155;
+    }
+
+    .history h3 { margin-bottom: 1rem; }
+    .history ul { list-style: none; }
+    .history li {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.8rem;
+      background: #1e293b;
+      border-radius: 8px;
+      margin-bottom: 0.6rem;
+      font-size: 0.95rem;
+    }
+
+    .amount { color: #22c55e; font-weight: bold; }
+
+    .modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+
+    .modal-content {
+      background: #1e293b;
+      padding: 2rem;
+      border-radius: 14px;
+      text-align: center;
+      width: 90%;
+      max-width: 400px;
+      position: relative;
+    }
+
+    .modal-content h2 { margin-bottom: 1rem; }
+    .modal-content input {
+      width: 100%;
+      padding: 0.7rem;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .modal-content button {
+      background: #10b981;
+      color: white;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 16px;
+      font-size: 1.8rem;
+      color: white;
+      cursor: pointer;
+    }
+
+    .upi-note {
+      font-size: 0.85rem;
+      color: #94a3b8;
+      margin-bottom: 1rem;
+    }
+
+    @media (max-width: 600px) {
+      .btn-group { flex-direction: column; gap: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">🎰 Gamble Wallet</div>
+    <a href="index.html" style="color: #fff; text-decoration: none;">🏠 Home</a>
+  </header>
+
+  <div class="main">
+    <div class="wallet-box">
+      <h2>Available Balance</h2>
+      <div class="balance" id="balance">₹0.00</div>
+
+      <div class="btn-group">
+        <button class="btn" onclick="openModal('add')">➕ Add Money</button>
+        <button class="btn" onclick="openModal('withdraw')">➖ Withdraw</button>
+      </div>
+
+      <div class="history">
+        <h3>💳 Transaction History</h3>
+        <ul id="historyList"></ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal" id="walletModal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal()">&times;</span>
+      <h2 id="modalTitle">Add Money</h2>
+      <p class="upi-note">Simulated UPI: 7017733805@upi</p>
+      <input type="number" id="amountInput" placeholder="Enter Amount ₹" min="1"/>
+      <button onclick="handleTransaction()">Submit</button>
+    </div>
+  </div>
+
+  <script>
+    let balance = 0;
+    let currentAction = "add";
+
+    const modal = document.getElementById("walletModal");
+    const modalTitle = document.getElementById("modalTitle");
+    const amountInput = document.getElementById("amountInput");
+    const balanceDisplay = document.getElementById("balance");
+    const historyList = document.getElementById("historyList");
+
+    function openModal(action) {
+      currentAction = action;
+      modalTitle.innerText = action === "add" ? "Add Money via UPI" : "Withdraw to UPI";
+      amountInput.value = "";
+      modal.style.display = "flex";
+    }
+
+    function closeModal() {
+      modal.style.display = "none";
+    }
+
+    function handleTransaction() {
+      const amount = parseFloat(amountInput.value);
+      if (isNaN(amount) || amount <= 0) {
+        alert("Please enter a valid amount.");
+        return;
+      }
+
+      if (currentAction === "withdraw" && amount > balance) {
+        alert("Insufficient balance.");
+        return;
+      }
+
+      const txnId = "TXN" + Math.floor(Math.random() * 1000000);
+
+      if (currentAction === "add") {
+        balance += amount;
+        addToHistory("Money Added", amount, txnId);
+      } else {
+        balance -= amount;
+        addToHistory("Money Withdrawn", -amount, txnId);
+      }
+
+      balanceDisplay.innerText = `₹${balance.toFixed(2)}`;
+      closeModal();
+    }
+
+    function addToHistory(action, amt, txnId) {
+      const li = document.createElement("li");
+      li.innerHTML = `
+        <span>${action} <br/><small>ID: ${txnId}</small></span>
+        <span class="amount">${amt > 0 ? "+" : ""}₹${amt.toFixed(2)}</span>
+      `;
+      historyList.prepend(li);
+    }
+
+    window.onclick = function (e) {
+      if (e.target === modal) closeModal();
+    };
+  </script>
+
+</body>
+</html>

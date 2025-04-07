@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gamble - User Profile</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #121212;
+      color: #f9fafb;
+      padding: 1rem;
+    }
+    .profile-container {
+      max-width: 460px;
+      margin: auto;
+      background: #1e1e2f;
+      border-radius: 16px;
+      padding: 1rem;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    }
+    .header {
+      position: relative;
+      background: linear-gradient(135deg, #ff3c6d, #7c3aed);
+      padding: 2rem 1rem 1rem;
+      border-radius: 14px 14px 0 0;
+      text-align: center;
+    }
+    .avatar-wrapper {
+      position: relative;
+      width: 90px;
+      height: 90px;
+      margin: auto;
+    }
+    .avatar {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      border: 3px solid white;
+      object-fit: cover;
+    }
+    .edit-photo {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background: #000000cc;
+      color: white;
+      font-size: 12px;
+      padding: 2px 5px;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+    .user-info {
+      margin-top: 0.5rem;
+    }
+    .user-info h3 {
+      margin-bottom: 0.2rem;
+      font-size: 1.1rem;
+    }
+    .balance-box {
+      background: #111827;
+      margin-top: 1rem;
+      border-radius: 12px;
+      text-align: center;
+      padding: 1rem;
+    }
+    .balance-box h2 { color: #facc15; }
+    .icon-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: space-around;
+      margin-top: 0.5rem;
+    }
+    .icon-btn {
+      background: #374151;
+      padding: 0.7rem;
+      border-radius: 10px;
+      text-align: center;
+      flex: 1 1 40%;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .icon-btn:hover {
+      background: #4b5563;
+    }
+    .section {
+      margin-top: 1.5rem;
+      background: #1f2937;
+      border-radius: 12px;
+      padding: 1rem;
+    }
+    .section h4 {
+      margin-bottom: 0.8rem;
+      color: #f3f4f6;
+    }
+    .section-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid #374151;
+      color: #d1d5db;
+      cursor: pointer;
+    }
+    .section-item:last-child {
+      border-bottom: none;
+    }
+    .service-icons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+    .service-item {
+      width: 23%;
+      text-align: center;
+      font-size: 0.75rem;
+      padding: 0.4rem;
+      background: #374151;
+      border-radius: 10px;
+    }
+    .logout-btn {
+      margin-top: 1.5rem;
+      width: 100%;
+      padding: 0.8rem;
+      background: #ef4444;
+      border: none;
+      color: white;
+      font-weight: bold;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="profile-container">
+    <div class="header">
+      <div class="avatar-wrapper">
+        <img id="avatar" src="https://i.ibb.co/3N1gZmF/avatar.jpg" alt="avatar" class="avatar">
+        <div class="edit-photo" onclick="editPhoto()">Edit</div>
+      </div>
+      <div class="user-info">
+        <h3 id="username">USERNAME</h3>
+        <small id="uid">UID: #######</small><br>
+        <small id="lastLogin">Last login: ---- </small>
+      </div>
+    </div>
+
+    <div class="balance-box">
+      <h2 id="balance">₹0.00</h2>
+      <div class="icon-buttons">
+        <div class="icon-btn">ARWallet</div>
+        <div class="icon-btn">Deposit</div>
+        <div class="icon-btn">Withdraw</div>
+        <div class="icon-btn">VIP</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h4>Transactions</h4>
+      <div class="section-item">Game History <span>›</span></div>
+      <div class="section-item">Transaction <span>›</span></div>
+      <div class="section-item">My Deposit <span>›</span></div>
+      <div class="section-item">My Withdraw <span>›</span></div>
+    </div>
+
+    <div class="section">
+      <div class="section-item">Notification <span>›</span></div>
+      <div class="section-item">Gifts <span>›</span></div>
+      <div class="section-item">Game Statistics <span>›</span></div>
+      <div class="section-item">Language <span>English ›</span></div>
+    </div>
+
+    <div class="section">
+      <h4>Service Center</h4>
+      <div class="service-icons">
+        <div class="service-item">Settings</div>
+        <div class="service-item">Feedback</div>
+        <div class="service-item">Notify</div>
+        <div class="service-item">Support</div>
+        <div class="service-item">Guide</div>
+        <div class="service-item">About</div>
+      </div>
+    </div>
+
+    <button class="logout-btn">Log Out</button>
+  </div>
+
+  <input type="file" id="fileInput" style="display:none" accept="image/*" onchange="changePhoto(event)" />
+
+  <script>
+    // Simulated API call to load user data
+    const userData = {
+      username: 'MEMBERNNGP8RFH ✅',
+      uid: '82543517',
+      lastLogin: '2025-04-07 16:30:28',
+      balance: '₹28.00',
+      avatar: 'https://i.ibb.co/3N1gZmF/avatar.jpg'
+    };
+
+    document.getElementById("username").innerHTML = userData.username;
+    document.getElementById("uid").innerHTML = `UID: ${userData.uid}`;
+    document.getElementById("lastLogin").innerHTML = `Last login: ${userData.lastLogin}`;
+    document.getElementById("balance").innerHTML = userData.balance;
+    document.getElementById("avatar").src = userData.avatar;
+
+    function editPhoto() {
+      document.getElementById('fileInput').click();
+    }
+
+    function changePhoto(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('avatar').src = e.target.result;
+        }
+        reader.readAsDataURL(file);
+      }
+    }
+  </script>
+</body>
+</html>

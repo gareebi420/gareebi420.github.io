@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gamble - Play & Win</title>
+  <link rel="stylesheet" href="style.css" />
+  <script defer src="script.js"></script>
+</head>
+<body>
+
+  <!-- Header/Navbar -->
+  <header class="navbar">
+    <div class="logo">🎰 Gamble</div>
+    <nav class="nav-links">
+      <button id="loginBtn" class="btn">Login</button>
+      <button id="registerBtn" class="btn">Register</button>
+    </nav>
+  </header>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <ul>
+      <li><a href="#games">🎮 Games</a></li>
+      <li><a href="wallet.html">💰 Wallet</a></li>
+      <li><a href="result.html">📈 Results</a></li>
+      <li><a href="support.html">📞 Support</a></li>
+    </ul>
+  </aside>
+
+  <!-- Main Section -->
+  <main class="main-content">
+    <section class="hero">
+      <h1>Welcome to <span class="highlight">Gamble</span></h1>
+      <p>India’s Most Thrilling Online Betting Platform</p>
+      <a href="#games" class="explore-btn">Explore Games</a>
+    </section>
+
+    <section class="games-section" id="games">
+      <h2 class="section-title">🎲 Available Games</h2>
+      <div class="games-grid">
+        <!-- Game 1 -->
+        <div class="game-card">
+          <img src="https://i.imgur.com/4ZQZ5El.png" alt="Color Prediction" />
+          <h3>Color Prediction</h3>
+          <p>Predict the next color & win instant cash!</p>
+          <button class="play-btn">Play Now</button>
+        </div>
+        <!-- Game 2 -->
+        <div class="game-card">
+          <img src="https://i.imgur.com/VZQ9U9C.png" alt="Spin Wheel" />
+          <h3>Spin Wheel</h3>
+          <p>Spin and try your luck with huge rewards!</p>
+          <button class="play-btn">Play Now</button>
+        </div>
+        <!-- Game 3 -->
+        <div class="game-card">
+          <img src="https://i.imgur.com/XblsGBQ.png" alt="Dice Game" />
+          <h3>Dice Roll</h3>
+          <p>Roll the dice & double your coins!</p>
+          <button class="play-btn">Play Now</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Login Modal -->
+  <div class="modal" id="loginModal">
+    <div class="modal-box">
+      <span class="close" id="closeLogin">&times;</span>
+      <h2>Login to Gamble</h2>
+      <input type="email" placeholder="Email" id="loginEmail" required />
+      <input type="password" placeholder="Password" id="loginPassword" required />
+      <button class="modal-btn" id="doLogin">Login</button>
+    </div>
+  </div>
+
+  <!-- Register Modal -->
+  <div class="modal" id="registerModal">
+    <div class="modal-box">
+      <span class="close" id="closeRegister">&times;</span>
+      <h2>Create an Account</h2>
+      <input type="text" placeholder="Full Name" id="registerName" required />
+      <input type="email" placeholder="Email" id="registerEmail" required />
+      <input type="password" placeholder="Password" id="registerPassword" required />
+      <button class="modal-btn" id="doRegister">Register</button>
+    </div>
+  </div>
+
+</body>
+</html>

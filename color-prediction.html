@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gamble - Advanced Color Prediction</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: white;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #38bdf8;
+    }
+
+    .game-container {
+      max-width: 700px;
+      margin: auto;
+      background: #1e293b;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 0 15px #00000070;
+    }
+
+    .timer {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: #22d3ee;
+    }
+
+    .section-title {
+      margin-top: 25px;
+      font-size: 1.2rem;
+      color: #7dd3fc;
+    }
+
+    .options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .option {
+      flex: 1 1 30%;
+      background: #334155;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .option:hover,
+    .option.selected {
+      background: #0ea5e9;
+    }
+
+    .input-group {
+      margin-top: 15px;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: none;
+      background: #475569;
+      color: white;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #38bdf8;
+      border: none;
+      color: white;
+      font-size: 1rem;
+      margin-top: 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #0ea5e9;
+    }
+
+    .result {
+      margin-top: 25px;
+      text-align: center;
+      font-size: 1.2rem;
+    }
+
+    .won {
+      color: #22c55e;
+    }
+
+    .lost {
+      color: #ef4444;
+    }
+
+    .prediction-summary {
+      background: #0f172a;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 15px;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎯 Color Prediction - Ultra Advanced</h1>
+
+  <div class="game-container">
+    <div class="timer" id="timer">⏳ 30s</div>
+
+    <!-- COLOR BET -->
+    <div class="section-title">🎨 Choose Color</div>
+    <div class="options" id="colorOptions">
+      <div class="option" data-type="color" data-value="Red">🔴 Red</div>
+      <div class="option" data-type="color" data-value="Green">🟢 Green</div>
+      <div class="option" data-type="color" data-value="Violet">🟣 Violet</div>
+    </div>
+
+    <!-- NUMBER BET -->
+    <div class="section-title">🔢 Choose Number</div>
+    <div class="options" id="numberOptions">
+      ${[...Array(10)].map((_, i) => `<div class="option" data-type="number" data-value="${i}">${i}</div>`).join('')}
+    </div>
+
+    <!-- SIZE BET -->
+    <div class="section-title">📏 Choose Size</div>
+    <div class="options" id="sizeOptions">
+      <div class="option" data-type="size" data-value="Big">🔺 Big (5-9)</div>
+      <div class="option" data-type="size" data-value="Small">🔻 Small (0-4)</div>
+    </div>
+
+    <!-- AMOUNT -->
+    <div class="input-group">
+      <input type="number" id="amount" placeholder="Enter Bet Amount ₹" />
+    </div>
+
+    <button onclick="placeBets()">Place Bet</button>
+
+    <div class="prediction-summary" id="summary"></div>
+
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    let timeLeft = 30;
+    const timerEl = document.getElementById("timer");
+    const resultEl = document.getElementById("result");
+    const summaryEl = document.getElementById("summary");
+
+    let selectedBets = {
+      color: null,
+      number: null,
+      size: null,
+      amount: 0
+    };
+
+    function startTimer() {
+      let timer = setInterval(() => {
+        timerEl.innerText = `⏳ ${timeLeft--}s`;
+        if (timeLeft < 0) {
+          clearInterval(timer);
+          showResult();
+        }
+      }, 1000);
+    }
+
+    // Select options logic
+    document.querySelectorAll('.option').forEach(option => {
+      option.addEventListener('click', () => {
+        const type = option.dataset.type;
+        document.querySelectorAll(`.option[data-type="${type}"]`).forEach(el => el.classList.remove('selected'));
+        option.classList.add('selected');
+        selectedBets[type] = option.dataset.value;
+      });
+    });
+
+    function placeBets() {
+      const amount = parseInt(document.getElementById("amount").value);
+      if (!amount || amount <= 0) {
+        alert("Please enter valid bet amount!");
+        return;
+      }
+      selectedBets.amount = amount;
+
+      summaryEl.innerHTML = `
+        <strong>✅ Your Predictions:</strong><br>
+        🎨 Color: ${selectedBets.color || 'None'}<br>
+        🔢 Number: ${selectedBets.number || 'None'}<br>
+        📏 Size: ${selectedBets.size || 'None'}<br>
+        💸 Amount: ₹${selectedBets.amount}
+      `;
+    }
+
+    function showResult() {
+      const resultNumber = Math.floor(Math.random() * 10);
+      const resultColor = [0, 5, 6].includes(resultNumber) ? 'Violet' :
+                          [1, 3, 7, 9].includes(resultNumber) ? 'Red' : 'Green';
+      const resultSize = resultNumber >= 5 ? 'Big' : 'Small';
+
+      resultEl.innerHTML = `
+        🎲 Number: <strong>${resultNumber}</strong><br>
+        🎨 Color: <strong style="color:${resultColor.toLowerCase()}">${resultColor}</strong><br>
+        📏 Size: <strong>${resultSize}</strong><br><br>
+      `;
+
+      let win = false;
+      if (selectedBets.number == resultNumber) win = true;
+      if (selectedBets.color == resultColor) win = true;
+      if (selectedBets.size == resultSize) win = true;
+
+      resultEl.innerHTML += win
+        ? `<div class="won">🏆 You WON ₹${selectedBets.amount * 2}</div>`
+        : `<div class="lost">😢 You LOST ₹${selectedBets.amount}</div>`;
+    }
+
+    startTimer();
+  </script>
+</body>
+</html>

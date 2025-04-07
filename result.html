@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Game Results - Gamble</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f172a;
+      color: white;
+      padding: 2rem;
+      min-height: 100vh;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #1e293b;
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      color: #38bdf8;
+    }
+
+    .back-link {
+      text-decoration: none;
+      color: #facc15;
+      font-weight: bold;
+    }
+
+    .result-box {
+      background: #1e293b;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: center;
+    }
+
+    th, td {
+      padding: 1rem;
+      border-bottom: 1px solid #334155;
+    }
+
+    th {
+      background: #0f172a;
+      font-size: 1rem;
+      color: #f8fafc;
+    }
+
+    tr:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .color-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: bold;
+    }
+
+    .circle {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .red { background: #ef4444; }
+    .green { background: #22c55e; }
+    .violet { background: #8b5cf6; }
+
+    .latest {
+      background: #0ea5e9;
+      color: #fff;
+      font-weight: bold;
+    }
+
+    .note {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: #94a3b8;
+    }
+
+    @media (max-width: 600px) {
+      th, td {
+        padding: 0.7rem;
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🎯 Gamble Result Board</h1>
+    <a href="index.html" class="back-link">🏠 Home</a>
+  </header>
+
+  <div class="result-box">
+    <table id="resultTable">
+      <thead>
+        <tr>
+          <th>Game ID</th>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Result</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Dynamic rows will be added here -->
+      </tbody>
+    </table>
+    <p class="note">* This result data is currently mock data. Real-time data will be fetched from backend later.</p>
+  </div>
+
+  <script>
+    const results = [
+      { id: 1239, date: "2025-04-07", time: "08:45 PM", result: "green" },
+      { id: 1238, date: "2025-04-07", time: "08:42 PM", result: "red" },
+      { id: 1237, date: "2025-04-07", time: "08:39 PM", result: "violet" },
+      { id: 1236, date: "2025-04-07", time: "08:36 PM", result: "green" },
+      { id: 1235, date: "2025-04-07", time: "08:33 PM", result: "red" },
+      { id: 1234, date: "2025-04-07", time: "08:30 PM", result: "green" },
+      { id: 1233, date: "2025-04-07", time: "08:27 PM", result: "violet" }
+    ];
+
+    const tableBody = document.querySelector("#resultTable tbody");
+
+    function renderResults() {
+      results.forEach((res, index) => {
+        const row = document.createElement("tr");
+        if (index === 0) row.classList.add("latest");
+
+        row.innerHTML = `
+          <td>#${res.id}</td>
+          <td>${res.date}</td>
+          <td>${res.time}</td>
+          <td>
+            <span class="color-box">
+              <span class="circle ${res.result}"></span> ${res.result.toUpperCase()}
+            </span>
+          </td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    renderResults();
+  </script>
+
+</body>
+</html>

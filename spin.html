@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Spin Wheel - Gamble</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: radial-gradient(circle at top, #1f0036, #000000);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 0 8px #ff00cc;
+    }
+
+    .balance {
+      background: #111827;
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      margin-bottom: 1.2rem;
+      font-size: 1.2rem;
+      border: 2px solid #9333ea;
+      box-shadow: 0 0 10px #7e22ce;
+    }
+
+    .wheel-container {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      border: 10px solid #6b21a8;
+      box-shadow: 0 0 30px #c026d3;
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+
+    .wheel {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      transition: transform 5s cubic-bezier(0.33, 1, 0.68, 1);
+      background: conic-gradient(
+        #14b8a6 0deg 60deg,
+        #f43f5e 60deg 120deg,
+        #facc15 120deg 180deg,
+        #6366f1 180deg 240deg,
+        #22c55e 240deg 300deg,
+        #e879f9 300deg 360deg
+      );
+    }
+
+    .pointer {
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 15px solid transparent;
+      border-right: 15px solid transparent;
+      border-bottom: 30px solid #fff;
+    }
+
+    .controls {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    input[type="number"] {
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      border: none;
+      font-size: 1rem;
+      width: 200px;
+    }
+
+    button {
+      padding: 0.8rem 2rem;
+      background: #9333ea;
+      color: white;
+      border: none;
+      font-size: 1.1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s;
+      box-shadow: 0 0 10px #9333ea;
+    }
+
+    button:hover {
+      background: #7e22ce;
+    }
+
+    .result {
+      font-size: 1.3rem;
+      margin-top: 1rem;
+      color: #facc15;
+      text-shadow: 0 0 6px #facc15;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎡 Spin to Win!</h1>
+
+  <div class="balance" id="balance">Balance: ₹0.00</div>
+
+  <div class="controls">
+    <input type="number" id="betAmount" placeholder="Enter Bet Amount ₹" min="1"/>
+    <button onclick="startSpin()">🎯 Place Bet & Spin</button>
+  </div>
+
+  <div class="wheel-container">
+    <div class="pointer"></div>
+    <div class="wheel" id="wheel"></div>
+  </div>
+
+  <div class="result" id="result"></div>
+
+  <script>
+    let balance = 500; // default balance
+    let spinning = false;
+
+    document.getElementById('balance').innerText = `Balance: ₹${balance.toFixed(2)}`;
+
+    function startSpin() {
+      if (spinning) return;
+
+      const bet = parseFloat(document.getElementById("betAmount").value);
+      if (isNaN(bet) || bet <= 0) {
+        alert("Enter a valid bet amount.");
+        return;
+      }
+
+      if (bet > balance) {
+        alert("Insufficient balance.");
+        return;
+      }
+
+      spinning = true;
+      balance -= bet;
+      document.getElementById('balance').innerText = `Balance: ₹${balance.toFixed(2)}`;
+      document.getElementById('result').innerText = "";
+
+      const wheel = document.getElementById("wheel");
+      const rotation = 360 * 5 + Math.floor(Math.random() * 360); // random + 5 full rotations
+      wheel.style.transform = `rotate(${rotation}deg)`;
+
+      setTimeout(() => {
+        const angle = rotation % 360;
+        let result = "";
+
+        if (angle >= 0 && angle < 60) result = "Aqua";
+        else if (angle >= 60 && angle < 120) result = "Red";
+        else if (angle >= 120 && angle < 180) result = "Yellow";
+        else if (angle >= 180 && angle < 240) result = "Indigo";
+        else if (angle >= 240 && angle < 300) result = "Green";
+        else result = "Pink";
+
+        document.getElementById("result").innerText = `🎉 You got: ${result}!`;
+
+        // future: add winning logic based on result + bet
+        spinning = false;
+      }, 5200);
+    }
+  </script>
+
+</body>
+</html>
